@@ -2,9 +2,9 @@ asyncTest( "eventCascade", function() {
 	expect( 2 );
 
 	function triggerMouseEventOn( id ){
-			var event = document.createEvent( "MouseEvent" );
-			event.initMouseEvent( "click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-			document.getElementById( id ).dispatchEvent( event );
+		var event = document.createEvent( "MouseEvent" );
+		event.initMouseEvent( "click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+		document.getElementById( id ).dispatchEvent( event );
 	}
 
 	QUnit.eventCascade([
