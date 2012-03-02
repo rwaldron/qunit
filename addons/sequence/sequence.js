@@ -1,5 +1,5 @@
 QUnit.extend( QUnit, {
-	eventCascade: function( sequence, timedOut, eventInfo ) {
+	eventSequence: function( sequence, timedOut, eventInfo ) {
 		var fn = sequence.shift(),
 			event = sequence.shift(),
 			self = this;
@@ -24,7 +24,7 @@ QUnit.extend( QUnit, {
 
 				// Let the current stack unwind before we fire off the next item in the sequence.
 				// TODO setTimeout(self.pageSequence, 0, sequence);
-				setTimeout(function(){ self.eventCascade(sequence); }, 0);
+				setTimeout(function(){ self.eventSequence(sequence); }, 0);
 			};
 
 			// bind the recursive call to the event
