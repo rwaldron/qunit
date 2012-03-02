@@ -7,7 +7,7 @@ asyncTest( "eventCascade", function() {
 		document.getElementById( id ).dispatchEvent( event );
 	}
 
-	QUnit.eventCascade([
+	QUnit.eventSequence([
 		function() {
 			triggerMouseEventOn( "foo" );
 		},
