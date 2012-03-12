@@ -12,7 +12,7 @@ QUnit.extend( QUnit, {
 			// if a pagechange or defined event is never triggered
 			// continue in the sequence to alert possible failures
 			var warnTimer = setTimeout(function() {
-				self.eventCascade( sequence, true );
+				self.eventSequence( sequence, true );
 			}, 2000);
 
 
