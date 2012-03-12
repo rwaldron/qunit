@@ -1,12 +1,16 @@
 QUnit.extend( QUnit, {
+	// TODO would be nice to use jquery events where possible
+	//      and to forward the even object for testing if possible
 	eventSequence: function( sequence, timedOut, eventInfo ) {
 		var fn = sequence.shift(),
 			event = sequence.shift(),
 			self = this;
 
+		// if the event isn't defined we've reached the end of the sequence.
+		// fire the shifted fn at the bottom to finish the sequence
 		if( event ){
-			// if a pagechange or defined event is never triggered
-			// continue in the sequence to alert possible failures
+			// if the event is never triggered continue in the sequence
+			// to alert the user to possible failures
 			var warnTimer = setTimeout(function() {
 				self.eventSequence( sequence, true );
 			}, 2000);
@@ -27,8 +31,8 @@ QUnit.extend( QUnit, {
 			document.addEventListener(event, listener);
 		}
 
-		// invoke the function which should, in some fashion,
-		// trigger the next event
+		// invoke the function which should either trigger the next event
+		// or finish out the sequence if no event was defined
 		fn( timedOut );
 	},
 
