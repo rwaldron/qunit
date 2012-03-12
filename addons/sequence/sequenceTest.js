@@ -1,5 +1,5 @@
 asyncTest( "eventCascade", function() {
-	expect( 2 );
+	expect( 3 );
 
 	function triggerMouseEventOn( id ){
 		var event = document.createEvent( "MouseEvent" );
@@ -20,7 +20,10 @@ asyncTest( "eventCascade", function() {
 
 		"click", function( timedOut ) {
 			ok( !timedOut, "the event wasn't run as a timeout" );
+		},
 
+		"foo", function( timedOut) {
+			ok( timedOut, "the event was never run and the timeout is reported" );
 			start();
 		}
 	]);
