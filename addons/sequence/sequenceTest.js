@@ -1,15 +1,15 @@
-asyncTest( "eventCascade", function() {
+asyncTest( "sequence.events", function() {
 	expect( 3 );
 
-	function triggerMouseEventOn( id ){
-		var event = document.createEvent( "MouseEvent" );
+	function triggerMouseEventOn( id ) {
+		var event = document.createEvent("MouseEvent");
 		event.initMouseEvent( "click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
 		document.getElementById( id ).dispatchEvent( event );
 	}
 
-	QUnit.eventSequence([
+	QUnit.sequence.events([
 		function() {
-			triggerMouseEventOn( "foo" );
+			triggerMouseEventOn("foo");
 		},
 
 		"click", function( timedOut ) {
@@ -29,10 +29,10 @@ asyncTest( "eventCascade", function() {
 	]);
 });
 
-asyncTest( "deferredSequence", function() {
+asyncTest( "sequence.deferred", function() {
 	expect( 2 );
 
-	QUnit.deferredSequence([
+  QUnit.sequence.deferred([
 		function() {
 			var deferred = jQuery.Deferred();
 			deferred.resolve();
