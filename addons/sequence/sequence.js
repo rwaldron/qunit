@@ -4,10 +4,6 @@ QUnit.extend( QUnit, {
 			event = sequence.shift(),
 			self = this;
 
-		if( fn === undefined ) {
-			return;
-		}
-
 		if( event ){
 			// if a pagechange or defined event is never triggered
 			// continue in the sequence to alert possible failures
