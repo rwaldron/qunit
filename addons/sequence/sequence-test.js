@@ -1,31 +1,90 @@
-asyncTest( "sequence.events", function() {
-	expect( 3 );
+asyncTest( "sequence.events, leading trigger", function() {
+	expect( 7 );
 
 	var foo = document.getElementById("foo"),
-			bar = document.getElementById("bar");
+			bar = document.getElementById("bar"),
+      sequence;
 
 
-	QUnit.sequence.events([
+	sequence = QUnit.sequence.events([
+
+    // Include the leading trigger
     function() {
-			QUnit.triggerEvent( foo, "click" );
-		},
+    	QUnit.triggerEvent( foo, "click" );
+    },
 
-		"click", function( timedOut ) {
-			ok( !timedOut, "the event wasn't run as a timeout" );
+		"click", function( timedOut, event ) {
 
+			ok( !timedOut, "the event was run, did not time out" );
+      equal( event.type, "click", "event.type matches expected type" );
+
+      // Trigger next event in the queue
 			QUnit.triggerEvent( bar, "click" );
 		},
 
-		"click", function( timedOut ) {
+		"click", function( timedOut, event ) {
+
 			ok( !timedOut, "the event wasn't run as a timeout" );
+      equal( event.type, "click", "event.type matches expected type" );
+
+      // Do not trigger an event, this should cause a
+      // timeout for the next event in the queue.
 		},
 
-		"foo", function( timedOut) {
-			ok( timedOut, "the event was never run and the timeout is reported" );
+		"foo", function( timedOut, event ) {
+
+			ok( timedOut, "the event was never run, it timed out" );
+      equal( event, null, "event object is null" );
+      equal( sequence.queue.length, 0, "There are no items in the sequence queue" );
+
 			start();
 		}
 	]);
 });
+
+asyncTest( "sequence.events, no leading trigger", function() {
+  expect( 7 );
+
+  var foo = document.getElementById("foo"),
+      bar = document.getElementById("bar"),
+      sequence;
+
+
+  sequence = QUnit.sequence.events([
+    // Omit the leading trigger
+    // function() {
+    //  QUnit.triggerEvent( foo, "click" );
+    // },
+
+    "click", function( timedOut, event ) {
+
+      ok( !timedOut, "the event was run, did not time out" );
+      equal( event.type, "click", "event.type matches expected type" );
+
+      // Trigger next event in the queue
+      QUnit.triggerEvent( bar, "click" );
+    },
+
+    "click", function( timedOut, event ) {
+
+      ok( !timedOut, "the event wasn't run as a timeout" );
+      equal( event.type, "click", "event.type matches expected type" );
+
+      // Do not trigger an event, this should cause a
+      // timeout for the next event in the queue.
+    },
+
+    "foo", function( timedOut, event ) {
+
+      ok( timedOut, "the event was never run, it timed out" );
+      equal( event, null, "event object is null" );
+      equal( sequence.queue.length, 0, "There are no items in the sequence queue" );
+
+      start();
+    }
+  ]);
+});
+
 
 asyncTest( "sequence.deferred", function() {
 	expect( 2 );
