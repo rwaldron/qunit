@@ -1,13 +1,13 @@
 asyncTest( "sequence.events", function() {
 	expect( 3 );
 
-  var foo = document.getElementById("foo"),
-      bar = document.getElementById("bar");
+	var foo = document.getElementById("foo"),
+			bar = document.getElementById("bar");
 
 
 	QUnit.sequence.events([
-		function() {
-      QUnit.triggerEvent( foo, "click" );
+    function() {
+			QUnit.triggerEvent( foo, "click" );
 		},
 
 		"click", function( timedOut ) {
@@ -30,7 +30,7 @@ asyncTest( "sequence.events", function() {
 asyncTest( "sequence.deferred", function() {
 	expect( 2 );
 
-  QUnit.sequence.deferred([
+	QUnit.sequence.deferred([
 		function() {
 			var deferred = jQuery.Deferred();
 			deferred.resolve();

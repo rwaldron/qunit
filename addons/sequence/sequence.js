@@ -2,30 +2,31 @@ QUnit.extend( QUnit, {
   sequence: {
     events: function( sequence, timedOut, eventInfo ) {
       var fn = sequence.shift(),
-          event = sequence.shift(),
+          eventType = sequence.shift(),
           self = this,
           warnTimer;
 
-      // `
+
       if ( fn === undefined ) {
         return;
       }
-      // if the event isn't defined we've reached the end of the sequence.
-      // fire the shifted fn at the bottom to finish the sequence
 
-      if ( event ) {
-        // if a pagechange or defined event is never triggered
+      // if the eventType isn't defined we've reached the end of the sequence.
+      // fire the shifted fn at the bottom to finish the sequence
+      if ( eventType ) {
+        // if a pagechange or defined eventType is never triggered
         // continue in the sequence to alert possible failures
         warnTimer = setTimeout(function() {
           QUnit.sequence.events( sequence, true );
-        }, 2000);
+
+        }, QUnit.config.timeout || 2000);
 
 
         function listener( eventInfo ) {
           clearTimeout( warnTimer );
 
           // we only want this listener to get fired once so unbind
-          document.removeEventListener( event, listener );
+          QUnit.removeEvent( document, eventType, listener );
 
           // Let the current stack unwind before we fire off the next item in the sequence.
           // TODO setTimeout(self.pageSequence, 0, sequence);
@@ -34,7 +35,7 @@ QUnit.extend( QUnit, {
           }, 0);
         };
 
-        document.addEventListener( event, listener, false );
+        QUnit.addEvent( document, eventType, listener );
       }
       // invoke the function which should either trigger the next event
       // or finish out the sequence if no event was defined
