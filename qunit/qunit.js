@@ -708,7 +708,8 @@ extend(QUnit, {
 
 	extend: extend,
 	id: id,
-	addEvent: addEvent
+	addEvent: addEvent,
+	removeEvent: removeEvent
 });
 
 //QUnit.constructor is set to the empty F() above so that we can add to it's prototype later
@@ -1044,6 +1045,15 @@ function extend(a, b) {
 	}
 
 	return a;
+}
+
+function removeEvent(elem, type, fn, useCapture) {
+	if ( elem.removeEventListener ) {
+		useCapture = useCapture != null ? useCapture : false;
+		elem.removeEventListener( type, fn, useCapture );
+	} else if ( elem.detachEvent ) {
+		elem.detachEvent( "on" + type, fn );
+	}
 }
 
 function addEvent(elem, type, fn) {
