@@ -38,10 +38,6 @@
         self = this,
         warnTimer;
 
-    if ( fn === undefined ) {
-      return;
-    }
-
     // if the eventType isn't defined we've reached the end of the sequence.
     // fire the shifted fn at the bottom to finish the sequence
     if ( eventType ) {
