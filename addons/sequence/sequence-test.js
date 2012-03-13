@@ -1,21 +1,19 @@
 asyncTest( "sequence.events", function() {
 	expect( 3 );
 
-	function triggerMouseEventOn( id ) {
-		var event = document.createEvent("MouseEvent");
-		event.initMouseEvent( "click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-		document.getElementById( id ).dispatchEvent( event );
-	}
+  var foo = document.getElementById("foo"),
+      bar = document.getElementById("bar");
+
 
 	QUnit.sequence.events([
 		function() {
-			triggerMouseEventOn("foo");
+      QUnit.triggerEvent( foo, "click" );
 		},
 
 		"click", function( timedOut ) {
 			ok( !timedOut, "the event wasn't run as a timeout" );
 
-			triggerMouseEventOn( "bar" );
+			QUnit.triggerEvent( bar, "click" );
 		},
 
 		"click", function( timedOut ) {
