@@ -13,13 +13,19 @@ test("expect in test", 1, function() {
 	ok(true);
 });
 
+function killer() {
+  expect(1);
+  ok(true);
+  garbage();
+}
+
 function testFunc() {
   expect(1);
   ok(true);
 }
 
 test("cumulative expect", function() {
-  testFunc();
+  killer();
   testFunc();
 });
 
